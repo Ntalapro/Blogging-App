@@ -12,9 +12,11 @@ import java.sql.Date;
 @Entity( name = "articles")
 @Getter
 @Setter
+@Builder
 @ToString
 @RequiredArgsConstructor
 @NoArgsConstructor( access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class ArticleEntity {
     @Id
     @GeneratedValue( strategy = GenerationType.SEQUENCE)

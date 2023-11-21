@@ -7,6 +7,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.sql.DataSource;
 
+// Setup a DB just for the tests.
 @Configuration
 public class JpaTestConfig {
 
