@@ -48,7 +48,7 @@
 create new user
 ### `POST /users/login`
 
-### `GET /profiles/{ussername}`
+### `GET /profiles/{username}`
 
 ### `GET /articles`📃
 get all articles (default page size 10)

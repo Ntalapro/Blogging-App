@@ -2,6 +2,7 @@ package com.bloggingapp.bloggingapp.users;
 
 import com.bloggingapp.bloggingapp.users.dtos.CreateUserRequest;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
@@ -14,6 +15,8 @@ public class UsersServiceTests {
     @Autowired
     UsersService usersService;
 
+
+    @Test
     void can_create_users(){
 
         var user = usersService.createUser(new CreateUserRequest(
@@ -23,7 +26,7 @@ public class UsersServiceTests {
         ));
 
         Assertions.assertNotNull(user);
-        Assertions.assertEquals("Ntala",user.getUsername());
+        Assertions.assertEquals("Ntalas",user.getUsername());
     }
 
 }
