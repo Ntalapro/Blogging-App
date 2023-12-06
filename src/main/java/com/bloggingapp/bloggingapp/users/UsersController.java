@@ -1,9 +1,12 @@
 package com.bloggingapp.bloggingapp.users;
 
 
+import com.bloggingapp.bloggingapp.common.dts.ErrorResponse;
 import com.bloggingapp.bloggingapp.users.dtos.CreateUserRequest;
-import com.bloggingapp.bloggingapp.users.dtos.CreateUserResponse;
+import com.bloggingapp.bloggingapp.users.dtos.UserResponse;
+import com.bloggingapp.bloggingapp.users.dtos.LoginUserRequest;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,19 +25,36 @@ public class UsersController {
     }
 
     @PostMapping("")
-    ResponseEntity<CreateUserResponse> signupUser(@RequestBody CreateUserRequest request){
+    ResponseEntity<UserResponse> signupUser(@RequestBody CreateUserRequest request){
 
         UserEntity savedUser = usersService.createUser(request);
         URI savdUserUri = URI.create("/users/"+savedUser.getId());
 
         return  ResponseEntity.created(savdUserUri)
-                .body(modelMapper.map(savedUser, CreateUserResponse.class));
+                .body(modelMapper.map(savedUser, UserResponse.class));
 
     }
+
 
     @PostMapping("/login")
-    void loginUser(@RequestBody CreateUserRequest request){
+    ResponseEntity<UserResponse> loginUser(@RequestBody LoginUserRequest request){
+        UserEntity loggedInUser = usersService.loginUser(request.getUsername(), request.getPassword());
+
+        UserResponse response = modelMapper.map(loggedInUser, UserResponse.class);
+        return ResponseEntity.ok(response);
 
     }
 
+    @ExceptionHandler(UsersService.UserNotFoundException.class)
+    ResponseEntity<ErrorResponse> handleUserNotFoundException(UsersService.UserNotFoundException ex){
+        if(ex instanceof UsersService.UserNotFoundException){
+            return  ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(ErrorResponse.builder()
+                            .message("Wrong Username or Password!")
+                            .build());
+        }
+
+        ErrorResponse internalServerError = ErrorResponse.builder().message("Something went wrong Internally").build();
+        return ResponseEntity.internalServerError().body(internalServerError);
+    }
 }

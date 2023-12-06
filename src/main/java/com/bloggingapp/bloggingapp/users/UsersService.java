@@ -40,15 +40,15 @@ public class UsersService {
     }
 
 
-//    static class UserNotFoundException extends IllegalArgumentException{
-//        public UserNotFoundException(Long id){
-//            super("User with Id: "+id+" not found ");
-//        }
-//
-//        public UserNotFoundException(String username){
-//            super("User with username: "+username+" not found ");
-//        }
-//
-//    }
+    static class UserNotFoundException extends IllegalArgumentException{
+        public UserNotFoundException(Long id){
+            super("User with Id: "+id+" not found ");
+        }
+
+        public UserNotFoundException(String username){
+            super("User with username: "+username+" not found ");
+        }
+
+    }
 
 }
