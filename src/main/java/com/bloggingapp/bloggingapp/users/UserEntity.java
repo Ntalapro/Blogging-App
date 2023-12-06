@@ -11,7 +11,6 @@ import java.util.Objects;
 @Entity( name = "users")
 @Getter
 @Setter
-@Builder
 @ToString
 @RequiredArgsConstructor
 @NoArgsConstructor( access = AccessLevel.PROTECTED)

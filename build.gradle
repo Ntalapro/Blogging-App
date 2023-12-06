@@ -42,9 +42,3 @@ tasks.named('bootBuildImage') {
 tasks.named('test') {
 	useJUnitPlatform()
 }
-
-//jar{
-//	manifest(
-//			'Main-Class' : 'com.bloggingapp.bloggingapp.BloggingappApplication'
-//	)
-//}
