@@ -50,7 +50,7 @@ public class UsersController {
         if(ex instanceof UsersService.UserNotFoundException){
             return  ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(ErrorResponse.builder()
-                            .message("Wrong Username or Password!")
+                            .message(ex.getMessage())
                             .build());
         }
 
