@@ -45,7 +45,7 @@ public class UsersController {
 
     }
 
-    @ExceptionHandler(UsersService.UserNotFoundException.class)
+    @ExceptionHandler({UsersService.UserNotFoundException.class})
     ResponseEntity<ErrorResponse> handleUserNotFoundException(UsersService.UserNotFoundException ex){
         String message;
         HttpStatus status;

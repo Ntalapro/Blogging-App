@@ -47,8 +47,15 @@
 ### `POST /users`
 create new user
 ### `POST /users/login`
-
+login user
+### `Login Error`
+```agsl
+    {
+        "message": "User with username: Tshepiso1 not found "
+    }
+```
 ### `GET /profiles/{username}`
+get user profile
 
 ### `GET /articles`📃
 get all articles (default page size 10)

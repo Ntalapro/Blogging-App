@@ -29,12 +29,12 @@ public class UsersService {
     }
 
     public  UserEntity getUser(Long id){
-        return usersRepository.findById(id).orElseThrow();
+        return usersRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
     }
 
 
     public UserEntity loginUser(String username, String password){
-        var user = usersRepository.findByUsername(username).orElseThrow();
+        var user = usersRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
         //TODO: match password
         return user;
     }
