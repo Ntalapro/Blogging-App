@@ -33,8 +33,8 @@ public class UsersController {
     }
 
     @PostMapping("/login")
-    void loginUser(@RequestBody CreateUserResponse response){
-        usersService.loginUser()
+    void loginUser(@RequestBody CreateUserRequest request){
+        usersService.loginUser(request.getUsername(), request.getPassword());
     }
 
 }
