@@ -47,14 +47,18 @@ public class UsersController {
 
     @ExceptionHandler(UsersService.UserNotFoundException.class)
     ResponseEntity<ErrorResponse> handleUserNotFoundException(UsersService.UserNotFoundException ex){
+        String message;
+        HttpStatus status;
+
         if(ex instanceof UsersService.UserNotFoundException){
-            return  ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(ErrorResponse.builder()
-                            .message(ex.getMessage())
-                            .build());
+             message = ex.getMessage();
+             status = HttpStatus.NOT_FOUND;
+        }else{
+            message = "Something Went Wrong Internally";
+            status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
 
-        ErrorResponse internalServerError = ErrorResponse.builder().message("Something went wrong Internally").build();
-        return ResponseEntity.internalServerError().body(internalServerError);
+        ErrorResponse response = ErrorResponse.builder().message(message).build();
+        return ResponseEntity.status(status).body(response);
     }
 }
