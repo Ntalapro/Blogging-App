@@ -37,21 +37,25 @@ public class UsersController {
 
 
     @PostMapping("/login")
-    ResponseEntity<UserResponse> loginUser(@RequestBody LoginUserRequest request){
+    ResponseEntity<UserResponse> loginUser(@RequestBody LoginUserRequest request) throws UsersService.InvalidCredentialsException {
         UserEntity loggedInUser =  usersService.loginUser(request.getUsername(), request.getPassword());
         UserResponse response = modelMapper.map(loggedInUser, UserResponse.class);
         return ResponseEntity.ok(response);
     }
 
-    @ExceptionHandler({UsersService.UserNotFoundException.class})
-    ResponseEntity<ErrorResponse> handleUserNotFoundException(UsersService.UserNotFoundException ex){
+    @ExceptionHandler({UsersService.UserNotFoundException.class,
+                        UsersService.InvalidCredentialsException.class})
+    ResponseEntity<ErrorResponse> handleUExceptions(Exception ex){
         String message;
         HttpStatus status;
 
         if(ex instanceof UsersService.UserNotFoundException){
              message = ex.getMessage();
              status = HttpStatus.NOT_FOUND;
-        }else{
+        } else if (ex instanceof UsersService.InvalidCredentialsException) {
+            message = ex.getMessage();
+            status = HttpStatus.UNAUTHORIZED;
+        } else{
             message = "Something Went Wrong Internally";
             status = HttpStatus.INTERNAL_SERVER_ERROR;
         }
