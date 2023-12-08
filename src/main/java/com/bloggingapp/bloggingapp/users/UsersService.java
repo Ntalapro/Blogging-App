@@ -33,11 +33,12 @@ public class UsersService {
     }
 
 
-    public UserEntity loginUser(String username, String password){
-        var user = usersRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
-        //TODO: match password
-        return user;
+    public UserEntity loginUser(String username, String password) {
+        // TODO: match password
+        return usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(username));
     }
+
 
 
     static class UserNotFoundException extends IllegalArgumentException{

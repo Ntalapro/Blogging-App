@@ -38,11 +38,9 @@ public class UsersController {
 
     @PostMapping("/login")
     ResponseEntity<UserResponse> loginUser(@RequestBody LoginUserRequest request){
-        UserEntity loggedInUser = usersService.loginUser(request.getUsername(), request.getPassword());
-
+        UserEntity loggedInUser =  usersService.loginUser(request.getUsername(), request.getPassword());
         UserResponse response = modelMapper.map(loggedInUser, UserResponse.class);
         return ResponseEntity.ok(response);
-
     }
 
     @ExceptionHandler({UsersService.UserNotFoundException.class})
