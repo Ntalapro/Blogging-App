@@ -1,6 +1,7 @@
 package com.bloggingapp.bloggingapp.users;
 
 import com.bloggingapp.bloggingapp.users.dtos.CreateUserRequest;
+import lombok.var;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class UsersServiceTests {
     @Test
     void can_create_users(){
 
-        var user = usersService.createUser(new CreateUserRequest(
+        UserEntity user = usersService.createUser(new CreateUserRequest(
                 "Ntalas",
                 "pass123",
                         "ntala@gmail.com"

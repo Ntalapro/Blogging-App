@@ -2,6 +2,7 @@ package com.bloggingapp.bloggingapp.users;
 
 
 import com.bloggingapp.bloggingapp.common.dts.ErrorResponse;
+import com.bloggingapp.bloggingapp.security.JWTService;
 import com.bloggingapp.bloggingapp.users.dtos.CreateUserRequest;
 import com.bloggingapp.bloggingapp.users.dtos.UserResponse;
 import com.bloggingapp.bloggingapp.users.dtos.LoginUserRequest;
@@ -18,10 +19,12 @@ public class UsersController {
 
     private final UsersService usersService;
     private final ModelMapper modelMapper;
+    private final JWTService jwtService;
 
-    public UsersController(UsersService usersService, ModelMapper modelMapper) {
+    public UsersController(UsersService usersService, ModelMapper modelMapper, JWTService jwtService) {
         this.usersService = usersService;
         this.modelMapper = modelMapper;
+        this.jwtService = jwtService;
     }
 
     @PostMapping("")

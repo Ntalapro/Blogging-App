@@ -1,7 +1,7 @@
 package com.bloggingapp.bloggingapp.users;
 
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
@@ -9,6 +9,7 @@ import org.springframework.lang.Nullable;
 import java.util.Objects;
 
 @Entity( name = "users")
+@Builder
 @Getter
 @Setter
 @ToString

@@ -1,12 +1,11 @@
 package com.bloggingapp.bloggingapp.users.dtos;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NonNull;
-import lombok.Setter;
+import lombok.*;
 
 @Data
 @Setter(AccessLevel.NONE)
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateUserRequest {
     @NonNull
     private String username;
@@ -16,5 +15,4 @@ public class CreateUserRequest {
 
     @NonNull
     private String email;
-
 }

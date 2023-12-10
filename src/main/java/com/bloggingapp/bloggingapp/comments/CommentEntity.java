@@ -2,7 +2,7 @@ package com.bloggingapp.bloggingapp.comments;
 
 import com.bloggingapp.bloggingapp.articles.ArticleEntity;
 import com.bloggingapp.bloggingapp.users.UserEntity;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.lang.NonNull;

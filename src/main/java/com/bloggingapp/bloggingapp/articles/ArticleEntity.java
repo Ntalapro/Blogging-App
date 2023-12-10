@@ -1,12 +1,12 @@
 package com.bloggingapp.bloggingapp.articles;
 
 import com.bloggingapp.bloggingapp.users.UserEntity;
-import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import javax.persistence.*;
 import java.sql.Date;
 
 @Entity( name = "articles")

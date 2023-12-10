@@ -4,6 +4,7 @@ package com.bloggingapp.bloggingapp.articles;
 import com.bloggingapp.bloggingapp.articles.dtos.UpdateArticleRequest;
 import com.bloggingapp.bloggingapp.users.UsersRepository;
 import com.bloggingapp.bloggingapp.users.UsersService;
+import lombok.var;
 import org.springframework.stereotype.Service;
 import com.bloggingapp.bloggingapp.articles.dtos.CreateArticleRequest;
 
@@ -35,7 +36,7 @@ public class ArticlesService {
 
     //create an article
     public ArticleEntity createArticle(CreateArticleRequest a, Long authorId){
-         var author = usersRepository.findById(authorId).orElseThrow();
+         var author = usersRepository.findById(authorId).orElseThrow(() -> new UsersService.UserNotFoundException(authorId));
 
         return articlesRepository.save(ArticleEntity.builder()
                         .title(a.getTitle())
@@ -49,7 +50,7 @@ public class ArticlesService {
     }
 
     public ArticleEntity updateArticle(long articleId, UpdateArticleRequest u){
-        var article = articlesRepository.findById(articleId).orElseThrow();
+        var article = articlesRepository.findById(articleId).orElseThrow(() -> new ArticleNotFoundException(u.getTitle()));
 
         if(u.getTitle() != null) {
             article.setTitle(u.getTitle());

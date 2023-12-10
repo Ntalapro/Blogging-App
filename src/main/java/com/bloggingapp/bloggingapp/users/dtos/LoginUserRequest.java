@@ -5,6 +5,7 @@ import lombok.*;
 
 @Data
 @Setter(AccessLevel.NONE)
+@NoArgsConstructor
 public class LoginUserRequest {
     @NonNull
     private String username;

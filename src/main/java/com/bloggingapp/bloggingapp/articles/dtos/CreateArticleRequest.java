@@ -1,12 +1,11 @@
 package com.bloggingapp.bloggingapp.articles.dtos;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.lang.NonNull;
 
 @Data
 @Setter(AccessLevel.NONE)
+@NoArgsConstructor
 public class CreateArticleRequest {
 
     @NonNull

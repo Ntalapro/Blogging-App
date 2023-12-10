@@ -3,6 +3,7 @@ package com.bloggingapp.bloggingapp.users;
 
 import com.bloggingapp.bloggingapp.users.dtos.CreateUserRequest;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -10,17 +11,18 @@ import org.springframework.stereotype.Service;
 public class UsersService {
     private final UsersRepository usersRepository;
     private final ModelMapper modelMapper;
-    private PasswordEncoder passwordEncoder;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
-    public UsersService(UsersRepository usersRepository, ModelMapper modelMapper) {
+    public UsersService(UsersRepository usersRepository, ModelMapper modelMapper, PasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.modelMapper = modelMapper;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Create a new user
     public UserEntity createUser(CreateUserRequest u){
         UserEntity newUser = modelMapper.map(u,UserEntity.class);
-        // TODO: encrypt and save password as well
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
         return usersRepository.save(newUser);
 
@@ -28,7 +30,7 @@ public class UsersService {
 
     // Get user by username
     public  UserEntity getUser(String username){
-        return usersRepository.findByUsername(username).orElseThrow();
+        return usersRepository.findByUsername(username).orElseThrow(() -> new UserNotFoundException(username));
     }
 
     public  UserEntity getUser(Long id){
@@ -46,7 +48,7 @@ public class UsersService {
 
 
 
-    static class UserNotFoundException extends IllegalArgumentException{
+    public static class UserNotFoundException extends IllegalArgumentException{
         public UserNotFoundException(Long id){
             super("User with Id: "+id+" not found ");
         }
@@ -57,7 +59,7 @@ public class UsersService {
 
     }
 
-    static class InvalidCredentialsException extends IllegalAccessException{
+    public static class InvalidCredentialsException extends IllegalAccessException{
          public InvalidCredentialsException(){
              super("Invalid credentials!");
          }
