@@ -7,7 +7,9 @@ import org.springframework.security.web.authentication.AuthenticationFilter;
 import javax.servlet.http.HttpServletRequest;
 
 public class JWTAuthenticationFilter extends AuthenticationFilter {
-    public JWTAuthenticationFilter() {
-        super(new JWTAuthenticationManager(), new JWTAunthenticationConveter());
+
+    private JWTAuthenticationManager jwtAuthenticationManager;
+    public JWTAuthenticationFilter(JWTAuthenticationManager jwtAuthenticationManager) {
+        super(jwtAuthenticationManager, new JWTAunthenticationConveter());
     }
 }

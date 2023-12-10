@@ -8,6 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 public class JWTAunthenticationConveter implements AuthenticationConverter {
     @Override
     public Authentication convert(HttpServletRequest request) {
-        return null;
+        String authHeader = request.getHeader("Authorization");
+
+        if(authHeader == null || !authHeader.startsWith("Bearer ")) {
+            return null;
+        }
+
+        String jwt = authHeader.substring(7);
+
+        return new JWTAuthentication(jwt);
     }
 }

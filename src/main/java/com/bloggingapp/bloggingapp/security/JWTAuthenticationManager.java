@@ -1,12 +1,35 @@
 package com.bloggingapp.bloggingapp.security;
 
+import com.bloggingapp.bloggingapp.users.UserEntity;
+import com.bloggingapp.bloggingapp.users.UsersService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 public class JWTAuthenticationManager implements AuthenticationManager {
+    private JWTService jwtService;
+    private UsersService usersService;
+
+    public JWTAuthenticationManager(JWTService jwtService, UsersService usersService) {
+        this.jwtService = jwtService;
+        this.usersService = usersService;
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+        if(authentication instanceof JWTAuthentication){
+            //Authenticate User
+            JWTAuthentication jwtAuthentication = (JWTAuthentication) authentication;
+            String jwt = jwtAuthentication.getCredentials();
+            Long userId = jwtService.retrieveUserId(jwt);
+            UserEntity userEntity = usersService.getUser(userId);
+
+
+            jwtAuthentication.userEntity = userEntity;
+            jwtAuthentication.setAuthenticated(true);
+            return jwtAuthentication;
+        }
         return null;
     }
 }
+
