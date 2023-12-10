@@ -2,8 +2,10 @@ package com.bloggingapp.bloggingapp.security;
 
 
 import com.bloggingapp.bloggingapp.users.UsersService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,8 +18,9 @@ import org.springframework.security.web.authentication.AnonymousAuthenticationFi
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     private JWTService jwtService;
     private UsersService usersService;
-    private JWTAuthenticationFilter jwtAuthenticationFilter;
+    private final JWTAuthenticationFilter jwtAuthenticationFilter;
 
+    @Autowired
     public AppSecurityConfig(JWTService jwtService, UsersService usersService, JWTAuthenticationFilter jwtAuthenticationFilter) {
         this.jwtService = jwtService;
         this.usersService = usersService;
@@ -25,23 +28,34 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    JWTAuthenticationFilter jwtAuthenticationFilter() throws Exception{
-        return  new JWTAuthenticationFilter( new JWTAuthenticationManager(jwtService,usersService));
+    public JWTAuthenticationFilter jwtAuthenticationFilter(JWTAuthenticationManager jwtAuthenticationManager) throws Exception {
+        return new JWTAuthenticationFilter(jwtAuthenticationManager);
     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http.cors().and().csrf().disable();
+
+        configureUrlAccess(http);
+
+        http.addFilterBefore(jwtAuthenticationFilter, AnonymousAuthenticationFilter.class);
+    }
+
+    private void configureUrlAccess(HttpSecurity http) throws Exception {
+        http.authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/users", "/users/login").permitAll()
+                .and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/users","/users/login").permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers(HttpMethod.GET, "/articles", "/articles/**").permitAll()
+                .and()
+                .authorizeRequests()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .and()
                 .logout();
 
-        http.addFilterBefore(jwtAuthenticationFilter, AnonymousAuthenticationFilter.class);
     }
 
 

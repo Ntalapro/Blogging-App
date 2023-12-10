@@ -5,7 +5,7 @@ import org.springframework.security.web.authentication.AuthenticationConverter;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class JWTAunthenticationConveter implements AuthenticationConverter {
+public class JWTAuthenticationConverter implements AuthenticationConverter {
     @Override
     public Authentication convert(HttpServletRequest request) {
         String authHeader = request.getHeader("Authorization");

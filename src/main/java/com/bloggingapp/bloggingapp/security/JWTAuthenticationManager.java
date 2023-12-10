@@ -7,29 +7,31 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 
 public class JWTAuthenticationManager implements AuthenticationManager {
+
     private JWTService jwtService;
     private UsersService usersService;
 
     public JWTAuthenticationManager(JWTService jwtService, UsersService usersService) {
         this.jwtService = jwtService;
         this.usersService = usersService;
+        System.out.println("JWTAuthenticationManager bean created");
     }
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        if(authentication instanceof JWTAuthentication){
-            //Authenticate User
+        if (authentication instanceof JWTAuthentication) {
+            // Authenticate User
             JWTAuthentication jwtAuthentication = (JWTAuthentication) authentication;
             String jwt = jwtAuthentication.getCredentials();
             Long userId = jwtService.retrieveUserId(jwt);
             UserEntity userEntity = usersService.getUser(userId);
 
-
-            jwtAuthentication.userEntity = userEntity;
+            jwtAuthentication.setUserEntity(userEntity);
             jwtAuthentication.setAuthenticated(true);
+
             return jwtAuthentication;
         }
-        return null;
+
+        throw new IllegalArgumentException("Cannot authenticate with non-JWT authentication");
     }
 }
-
