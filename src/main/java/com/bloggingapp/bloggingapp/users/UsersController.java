@@ -32,9 +32,14 @@ public class UsersController {
 
         UserEntity savedUser = usersService.createUser(request);
         URI savdUserUri = URI.create("/users/"+savedUser.getId());
+        UserResponse savedUserResponse = modelMapper.map(savedUser, UserResponse.class);
+
+        savedUserResponse.setToken(
+                jwtService.createJwt(savedUser.getId()) //generate token for user
+        );
 
         return  ResponseEntity.created(savdUserUri)
-                .body(modelMapper.map(savedUser, UserResponse.class));
+                .body(savedUserResponse);
 
     }
 
@@ -42,8 +47,13 @@ public class UsersController {
     @PostMapping("/login")
     ResponseEntity<UserResponse> loginUser(@RequestBody LoginUserRequest request) throws UsersService.InvalidCredentialsException {
         UserEntity loggedInUser =  usersService.loginUser(request.getUsername(), request.getPassword());
-        UserResponse response = modelMapper.map(loggedInUser, UserResponse.class);
-        return ResponseEntity.ok(response);
+        UserResponse loggedInUserResponse = modelMapper.map(loggedInUser, UserResponse.class);
+
+        loggedInUserResponse.setToken(
+                jwtService.createJwt(loggedInUser.getId()) //generate token for user
+        );
+
+        return ResponseEntity.ok(loggedInUserResponse);
     }
 
     @ExceptionHandler({UsersService.UserNotFoundException.class,
