@@ -5,11 +5,10 @@ import com.bloggingapp.bloggingapp.users.UsersService;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-
 public class JWTAuthenticationManager implements AuthenticationManager {
 
-    private JWTService jwtService;
-    private UsersService usersService;
+    private final JWTService jwtService;
+    private final UsersService usersService;
 
     public JWTAuthenticationManager(JWTService jwtService, UsersService usersService) {
         this.jwtService = jwtService;
