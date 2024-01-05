@@ -1,5 +1,5 @@
 # Blogging Application
-
+App building in progress, this is what I have so far.
 ## Json Enitites
 
 ### User
